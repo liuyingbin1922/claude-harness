@@ -2,7 +2,7 @@
 
 让 Claude Code 一口气完成所有任务的开源框架。
 
-[English](./README_EN.md) | 简体中文
+[English](./README_EN.md) | [简体中文](./readme.md)
 
 ## 什么是 Harness
 
