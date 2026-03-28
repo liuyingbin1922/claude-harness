@@ -1,0 +1,9 @@
+{
+  "name": "Python",
+  "tech_stack": "- **后端:** Python 3.8+\n- **虚拟环境:** venv",
+  "build_commands": "```bash\nsource venv/bin/activate\npython {{ENTRY_FILE}}           # 运行主程序\npython -m pytest tests/         # 运行测试\n```",
+  "init_content": "# 检查是否在项目根目录\nif [ ! -f \"{{ENTRY_FILE}}\" ]; then\n    echo \"❌ 错误：请在项目根目录运行此脚本\"\n    exit 1\nfi\n\n# 检查虚拟环境\nif [ ! -d \"venv\" ]; then\n    echo \"📦 创建虚拟环境...\"\n    python3 -m venv venv\nfi\n\n# 激活虚拟环境\necho \"🔧 激活虚拟环境...\"\nsource venv/bin/activate\n\n# 安装/更新依赖\nif [ -f \"requirements.txt\" ]; then\n    echo \"📥 安装依赖...\"\n    pip install -q -r requirements.txt\nfi\n\n# 创建必要目录\necho \"📁 创建必要目录...\"\nmkdir -p logs data",
+  "entry_file": "main.py",
+  "file_patterns": ["*.py"],
+  "detect_files": ["requirements.txt", "pyproject.toml", "setup.py"]
+}

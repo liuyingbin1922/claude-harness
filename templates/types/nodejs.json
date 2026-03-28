@@ -1,0 +1,9 @@
+{
+  "name": "Node.js",
+  "tech_stack": "- **运行时:** Node.js\n- **包管理:** npm/yarn/pnpm",
+  "build_commands": "```bash\nnpm install           # 安装依赖\nnpm run dev           # 开发模式\nnpm run build         # 构建\nnpm test              # 测试\n```",
+  "init_content": "# 检查是否在项目根目录\nif [ ! -f \"package.json\" ]; then\n    echo \"❌ 错误：请在项目根目录运行此脚本\"\n    exit 1\nfi\n\n# 安装依赖\necho \"📥 安装依赖...\"\nnpm install\n\n# 创建必要目录\necho \"📁 创建必要目录...\"\nmkdir -p logs dist",
+  "entry_file": "index.js",
+  "file_patterns": ["*.js", "*.ts"],
+  "detect_files": ["package.json"]
+}

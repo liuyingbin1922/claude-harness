@@ -1,0 +1,20 @@
+#!/bin/bash
+# {{PROJECT_TYPE}} 项目环境初始化脚本
+# 由 harness-init 自动创建
+
+set -e
+
+echo "🚀 {{PROJECT_NAME}} 开发环境初始化..."
+echo "========================================"
+
+{{INIT_CONTENT}}
+
+echo ""
+echo "========================================"
+echo "✅ 环境初始化完成！"
+echo ""
+echo "Harness 命令："
+echo "  /run-all              # 一口气完成所有任务"
+echo "  ./check-progress.sh   # 查看进度"
+echo "  ./run-harness.sh      # 一键启动（无人值守）"
+echo ""

@@ -1,0 +1,9 @@
+{
+  "name": "Generic",
+  "tech_stack": "- **项目类型:** 通用项目\n- **请根据实际情况修改**",
+  "build_commands": "```bash\n# 请根据项目实际情况修改构建命令\nmake build            # 构建\nmake test             # 测试\nmake run              # 运行\n```",
+  "init_content": "# 检查是否在项目根目录\necho \"🔧 初始化环境...\"\n\n# 创建必要目录\necho \"📁 创建必要目录...\"\nmkdir -p logs data\n\necho \"⚠️  提示：请根据项目实际情况修改 init.sh 中的初始化逻辑\"",
+  "entry_file": "README.md",
+  "file_patterns": ["*"],
+  "detect_files": []
+}

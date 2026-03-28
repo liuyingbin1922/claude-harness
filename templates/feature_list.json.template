@@ -1,0 +1,19 @@
+[
+  {
+    "id": 1,
+    "category": "核心功能",
+    "priority": "critical",
+    "description": "示例功能 - 修改为你项目的第一个功能",
+    "steps": [
+      "步骤1: 描述要做什么",
+      "步骤2: 描述如何验证",
+      "步骤3: 描述期望结果"
+    ],
+    "passes": false,
+    "status": "pending",
+    "assigned_to": "coder",
+    "notes": "由 harness-init 自动创建的示例功能",
+    "blocked_reason": null,
+    "completed_at": null
+  }
+]

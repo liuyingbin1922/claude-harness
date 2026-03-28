@@ -1,0 +1,60 @@
+#!/bin/bash
+# 随时运行查看进度，不打断 Claude
+# 由 harness-init 自动创建
+
+if [ ! -f "feature_list.json" ]; then
+    echo "❌ 错误：未找到 feature_list.json"
+    echo "   请先运行 /harness-init 初始化 Harness 工程"
+    exit 1
+fi
+
+python3 -c "
+import json
+from datetime import datetime
+
+try:
+    data = json.load(open('feature_list.json'))
+    total = len(data)
+    done = sum(1 for f in data if f.get('passes') == True)
+    blocked = sum(1 for f in data if f.get('status') == 'blocked')
+    pending = total - done - blocked
+
+    print(f'📊 进度: {done}/{total} ({done/total*100:.1f}%)' if total > 0 else '📊 进度: 0/0')
+    print(f'✅ 完成: {done}')
+    print(f'⏳ 待做: {pending}')
+    print(f'🚫 卡住: {blocked}')
+    print()
+
+    if pending > 0:
+        print('⏳ 待实现功能（按优先级排序）：')
+        priority_order = {'critical': 0, 'high': 1, 'medium': 2, 'low': 3}
+        pending_features = [f for f in data if f.get('passes') == False and f.get('status') != 'blocked']
+        pending_features.sort(key=lambda x: priority_order.get(x.get('priority', 'low'), 3))
+        for f in pending_features[:5]:
+            print(f'  - [{f[\"id\"]}] [{f[\"priority\"].upper()}] {f[\"description\"]}')
+        if len(pending_features) > 5:
+            print(f'  ... 还有 {len(pending_features) - 5} 个')
+        print()
+
+    if blocked > 0:
+        print('🚫 被卡住的功能：')
+        for f in data:
+            if f.get('status') == 'blocked':
+                print(f'  - [{f[\"id\"]}] {f[\"description\"]}')
+                print(f'    原因: {f.get(\"blocked_reason\", \"未知\")}')
+        print()
+
+    if done > 0:
+        print('✅ 最近完成的功能：')
+        done_features = [f for f in data if f.get('passes') == True]
+        done_features.sort(key=lambda x: x.get('completed_at', ''), reverse=True)
+        for f in done_features[:3]:
+            completed = f.get('completed_at', '未知时间')
+            print(f'  - [{f[\"id\"]}] {f[\"description\"]} ({completed})')
+except FileNotFoundError:
+    print('❌ 未找到 feature_list.json')
+except json.JSONDecodeError:
+    print('❌ feature_list.json 格式错误')
+except Exception as e:
+    print(f'❌ 错误: {e}')
+"

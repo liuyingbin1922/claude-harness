@@ -1,0 +1,47 @@
+#!/bin/bash
+# 一键启动 Harness，全程无人值守
+# 由 harness-init 自动创建
+
+set -e
+
+PROJECT_DIR="$(cd "$(dirname "$0")" && pwd)"
+LOG_FILE="$PROJECT_DIR/harness-$(date +%Y%m%d-%H%M%S).log"
+
+echo "🚀 启动 Harness..."
+echo "📝 日志输出到: $LOG_FILE"
+
+# 检查 feature_list.json 是否存在
+if [ ! -f "feature_list.json" ]; then
+    echo "❌ 错误：未找到 feature_list.json"
+    echo "   请先运行 /harness-init 初始化 Harness 工程"
+    exit 1
+fi
+
+# 从 feature_list.json 读取未完成数量
+PENDING=$(python3 -c "
+import json
+data = json.load(open('feature_list.json'))
+pending = [f for f in data if f.get('passes') == False]
+print(len(pending))
+" 2>/dev/null || echo "0")
+
+echo "📋 待完成功能: $PENDING 个"
+
+if [ "$PENDING" -eq 0 ]; then
+    echo "✅ 所有功能已完成！"
+    exit 0
+fi
+
+# 启动 Claude Code 全自动执行
+echo "🤖 启动 Claude Code 自动执行..."
+claude -p "
+请完成 feature_list.json 中所有 passes=false 的功能。
+全程不要停下来询问。
+遇到技术决策自己决定并在 claude-progress.txt 中记录原因。
+全部完成后输出总结报告。
+" \
+  --dangerously-skip-permissions \
+  2>&1 | tee "$LOG_FILE"
+
+echo ""
+echo "✅ Harness 执行完毕，查看日志: $LOG_FILE"

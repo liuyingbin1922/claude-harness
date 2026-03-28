@@ -1,0 +1,29 @@
+# {{PROJECT_NAME}} - 进度日志
+# 由 harness-init 自动创建
+
+## 项目信息
+- 项目名称: {{PROJECT_NAME}}
+- 项目类型: {{PROJECT_TYPE}}
+- 创建日期: {{DATE}}
+- 最后更新: {{DATE}}
+
+## 改造为 Harness 工程
+- ✅ CLAUDE.md 工作手册
+- ✅ feature_list.json 功能清单
+- ✅ claude-progress.txt 进度日志
+- ✅ .claude/commands/run-all.md 自驱动命令
+- ✅ run-harness.sh 一键启动脚本
+- ✅ check-progress.sh 进度检查脚本
+- ✅ init.sh 环境初始化脚本
+
+## 已完成
+- 暂无
+
+## 进行中
+- 待从 feature_list.json 选择第一个功能
+
+## 待处理
+- feature_list.json 中的所有功能
+
+## 下次 Session 计划
+1. 实现 feature_list.json 中第一个功能

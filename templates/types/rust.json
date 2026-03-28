@@ -1,0 +1,9 @@
+{
+  "name": "Rust",
+  "tech_stack": "- **语言:** Rust\n- **构建工具:** Cargo",
+  "build_commands": "```bash\ncargo build           # 构建\ncargo run             # 运行\ncargo test            # 测试\ncargo check           # 检查\n```",
+  "init_content": "# 检查是否在项目根目录\nif [ ! -f \"Cargo.toml\" ]; then\n    echo \"❌ 错误：请在项目根目录运行此脚本\"\n    exit 1\nfi\n\n# 构建项目\necho \"🔧 构建项目...\"\ncargo check\n\n# 创建必要目录\necho \"📁 创建必要目录...\"\nmkdir -p logs",
+  "entry_file": "src/main.rs",
+  "file_patterns": ["*.rs"],
+  "detect_files": ["Cargo.toml"]
+}

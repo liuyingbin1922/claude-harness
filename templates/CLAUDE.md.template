@@ -1,0 +1,114 @@
+# {{PROJECT_NAME}} - Claude Harness 工作手册
+
+## 🎯 项目目标
+{{PROJECT_DESCRIPTION}}
+
+**当前阶段：** 项目已改造为 Harness 工程，开始迭代开发
+
+## 🛠️ 技术栈
+- **项目类型:** {{PROJECT_TYPE}}
+{{TECH_STACK}}
+
+## ⚡ 常用命令
+
+### 环境启动（每次 Session 必须先执行）
+```bash
+./init.sh                    # 启动开发环境
+```
+
+### 构建与测试
+{{BUILD_COMMANDS}}
+
+## 📁 目录结构
+```
+{{DIRECTORY_STRUCTURE}}
+├── {{ENTRY_FILE}}          # 主入口
+├── feature_list.json       # 功能清单（Harness 核心）
+└── claude-progress.txt     # 进度日志
+```
+
+## 🔄 自驱动工作循环（重要）
+
+### 使用 /run-all 一口气完成所有任务
+
+```bash
+/run-all    # 自动完成所有 passes=false 的功能，中途不询问
+```
+
+**工作循环逻辑：**
+```
+LOOP:
+  1. 读取 feature_list.json
+  2. 按 priority 排序找到第一个 passes=false 的功能
+  3. 如果没有 → 跳转到 DONE
+  4. 实现该功能（自动决策，不询问）
+  5. 按 steps 验证（失败则修复，最多重试3次）
+  6. 验证通过 → passes 改为 true → git commit
+  7. 更新 claude-progress.txt
+  8. 回到步骤 1
+
+DONE:
+  所有功能完成，输出总结报告
+```
+
+**禁止中途询问的情况：**
+- 完成一个功能后（直接做下一个）
+- 需要创建新文件时（直接创建）
+- 需要安装依赖时（直接安装）
+- 遇到小的技术选型时（自己决策并记录原因）
+
+**只有以下情况才允许停下来：**
+- 遇到需求描述有严重歧义，无法自己决策
+- 需要外部凭证/密钥
+- 所有功能已完成
+
+### 辅助脚本
+
+```bash
+./run-harness.sh          # 一键启动，全程无人值守（带日志）
+./check-progress.sh       # 查看当前进度（不打断 Claude）
+```
+
+---
+
+## 📋 Agent 工作规则（必读）
+
+### 每次 Session 开始必须执行
+1. `pwd` — 确认工作目录
+2. `cat claude-progress.txt` — 了解上次进度
+3. `cat feature_list.json` — 找到下一个 `passes=false` 的功能
+4. `./init.sh` — 启动开发环境
+5. 运行基础健康检查，确保上次代码没有遗留 Bug
+
+### 工作流程
+1. 从 `feature_list.json` 选择 **一个** `priority` 最高且 `passes=false` 的功能
+2. 阅读该功能的详细需求
+3. 实现该功能
+4. 用真实用户场景测试（运行完整流程验证）
+5. 确认通过后：
+   - 将该功能的 `passes` 改为 `true`
+   - `git add -A && git commit -m "feat: [功能描述]"`
+   - 更新 `claude-progress.txt`
+6. 继续下一个功能
+
+### 完成标准
+功能只有在满足以下所有条件后才能标记为 `passes=true`：
+- [ ] 按照 `steps` 字段中的步骤全部验证通过
+- [ ] 代码没有明显的错误处理和边界问题
+- [ ] 没有 console 报错或异常日志
+- [ ] 已提交到 git
+
+### 禁止行为
+- 不允许在 main 分支直接提交（使用 feature 分支）
+- 不允许把功能标记为完成但没测试
+- 不允许一次性实现多个功能
+- 不允许删除或修改 `feature_list.json` 中已有的测试步骤
+
+## 📝 进度追踪
+- 功能清单：`feature_list.json`
+- 进度日志：`claude-progress.txt`
+- Session 开始命令：`/start-session`
+- Session 结束命令：`/end-session`
+
+## 📚 参考文档
+- 原项目 README.md

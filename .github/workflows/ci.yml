@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Test install script
+      run: |
+        chmod +x install.sh
+        ./install.sh
+
+    - name: Verify templates exist
+      run: |
+        test -f ~/.claude/commands/harness-init.md
+        test -f ~/.claude/harness-templates/CLAUDE.md.template
+        test -f ~/.claude/harness-templates/feature_list.json.template
+        test -f ~/.claude/harness-templates/types/python.json
+        echo "✅ All templates installed"
+
+    - name: Test template syntax
+      run: |
+        python3 -c "import json; json.load(open('templates/types/python.json'))"
+        python3 -c "import json; json.load(open('templates/types/nodejs.json'))"
+        python3 -c "import json; json.load(open('templates/feature_list.json.template'))"
+        echo "✅ All JSON files valid"

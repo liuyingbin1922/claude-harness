@@ -1,0 +1,9 @@
+{
+  "name": "Go",
+  "tech_stack": "- **语言:** Go 1.18+\n- **模块管理:** Go Modules",
+  "build_commands": "```bash\ngo mod tidy           # 整理依赖\ngo build              # 构建\ngo test ./...         # 测试\ngo run {{ENTRY_FILE}}  # 运行\n```",
+  "init_content": "# 检查是否在项目根目录\nif [ ! -f \"go.mod\" ]; then\n    echo \"❌ 错误：请在项目根目录运行此脚本\"\n    exit 1\nfi\n\n# 整理依赖\necho \"📥 整理依赖...\"\ngo mod tidy\n\n# 创建必要目录\necho \"📁 创建必要目录...\"\nmkdir -p logs bin",
+  "entry_file": "main.go",
+  "file_patterns": ["*.go"],
+  "detect_files": ["go.mod"]
+}
