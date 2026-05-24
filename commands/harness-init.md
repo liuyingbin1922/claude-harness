@@ -12,6 +12,7 @@ allowed-tools: Bash, Read, Write, Edit, MultiEdit, Glob, Grep
 - 项目类型（Python/Node.js/Go/Rust/其他）
 - 入口文件
 - 目录结构
+- `docs/` 目录是否存在（用于 Spec 驱动开发）
 
 ### 2. 备份现有文件
 如果以下文件已存在，备份为 `.backup.时间戳`：
@@ -40,6 +41,7 @@ allowed-tools: Bash, Read, Write, Edit, MultiEdit, Glob, Grep
    - {{BUILD_COMMANDS}} → 构建命令
    - {{DIRECTORY_STRUCTURE}} → 目录结构
    - {{ENTRY_FILE}} → 入口文件
+   - {{SPEC_WORKFLOW}} → 如果检测到 `docs/` 目录，注入 Spec 工作流说明；否则为空
 
 2. **feature_list.json** - 从模板复制
 
@@ -55,6 +57,8 @@ allowed-tools: Bash, Read, Write, Edit, MultiEdit, Glob, Grep
 
 8. **check-progress.sh** - 从模板复制
 
+9. **artifacts/** 目录 - 如果检测到 `docs/` 目录存在，则创建此目录用于存放生成的 spec
+
 ### 4. 设置权限
 为 shell 脚本添加执行权限：
 - init.sh
@@ -63,6 +67,11 @@ allowed-tools: Bash, Read, Write, Edit, MultiEdit, Glob, Grep
 
 ### 5. 输出结果
 显示创建的文件列表和下一步操作指南。
+
+如果检测到 `docs/` 目录，额外提示：
+- 检测到的草稿文件数量
+- 已创建的 `artifacts/` 目录
+- 建议的下一步：运行 `/spec-gen` 生成规范化 spec
 
 ## 模板变量
 
@@ -76,6 +85,7 @@ allowed-tools: Bash, Read, Write, Edit, MultiEdit, Glob, Grep
 | {{DIRECTORY_STRUCTURE}} | 目录结构 |
 | {{ENTRY_FILE}} | 主入口文件 |
 | {{DATE}} | 当前日期 |
+| {{SPEC_WORKFLOW}} | 检测到 `docs/` 时注入 Spec 工作流说明，否则为空 |
 
 ## 检测优先级
 

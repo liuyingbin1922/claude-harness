@@ -69,6 +69,8 @@ DONE:
 ./check-progress.sh       # 查看当前进度（不打断 Claude）
 ```
 
+{{SPEC_WORKFLOW}}
+
 ---
 
 ## 📋 Agent 工作规则（必读）

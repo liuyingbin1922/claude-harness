@@ -26,12 +26,12 @@ mkdir -p "$TEMPLATES_DIR"/types
 
 # 复制命令
 echo "📄 安装命令..."
-if [ -f "commands/harness-init.md" ]; then
-    cp commands/harness-init.md "$COMMANDS_DIR/"
-    echo "   ✓ harness-init.md"
-else
-    echo "   ⚠️  harness-init.md 未找到"
-fi
+for cmd in commands/*.md; do
+    if [ -f "$cmd" ]; then
+        cp "$cmd" "$COMMANDS_DIR/"
+        echo "   ✓ $(basename $cmd)"
+    fi
+done
 
 # 复制模板
 echo "📄 安装模板..."

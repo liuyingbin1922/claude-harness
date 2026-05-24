@@ -1,0 +1,52 @@
+你是一名项目管理专家。请将以下技术规格书转换为 Harness 框架的 feature_list.json 格式。
+
+## 技术规格书
+
+{{SPEC_CONTENT}}
+
+## 输出要求
+
+请输出一个合法的 JSON 数组，数组中的每个元素是一个功能对象。输出中**不要包含任何其他文字**（如解释、说明、markdown 代码块标记等），只输出纯 JSON。
+
+### 功能对象字段
+
+```json
+{
+  "id": 1,
+  "category": "功能分类",
+  "priority": "critical",
+  "description": "一句话功能描述",
+  "steps": ["具体可执行的验证步骤1", "步骤2", "步骤3"],
+  "passes": false,
+  "status": "pending",
+  "assigned_to": "coder",
+  "notes": "技术要点摘要",
+  "blocked_reason": null,
+  "completed_at": null
+}
+```
+
+### 字段说明
+
+- **id**: 数字，从 1 开始递增，确保唯一且连续
+- **category**: 从 Spec 的功能章节提取分类，如 "核心功能"、"API接口"、"数据层"、"用户界面"、"测试" 等。如果 Spec 没有明确分类，根据功能内容合理推断
+- **priority**: 直接使用 Spec 中的优先级标注，值为 "critical"、"high"、"medium"、"low" 之一
+- **description**: 一句话概括该功能，清晰明确
+- **steps**: 字符串数组，从 Spec 中该功能的"验收标准"转换而来。要求：
+  - 每条步骤必须具体可执行，避免模糊描述如"确保正常工作"、"检查无错误"
+  - 优先使用动词开头，如"创建..."、"实现..."、"验证..."、"运行..."
+  - 每个功能 3-5 条步骤
+- **passes**: 固定为 false
+- **status**: 固定为 "pending"
+- **assigned_to**: 固定为 "coder"
+- **notes**: 技术要点摘要，100 字以内。如果该功能在 Spec 中有标注依赖关系（如"依赖: Feature X"），在这里保留依赖信息，格式为 "依赖: #id"
+- **blocked_reason**: 固定为 null
+- **completed_at**: 固定为 null
+
+### 转换规则
+
+1. Spec 中每个 "#### Feature N:" 对应 feature_list 中的一个条目
+2. 如果 Spec 中功能较多（超过 15 个），将紧密相关的功能合并为一个 feature_list 条目，steps 中体现子任务
+3. 按优先级排序输出数组：critical > high > medium > low
+4. 如果某些功能明显依赖其他功能先完成，在 notes 中标注依赖
+5. 确保 JSON 格式合法：字符串使用双引号、数组/对象使用正确的括号、无尾随逗号
